@@ -410,7 +410,7 @@ function shareToTelegram() {
     const text = `🎭 Я --- ${archetype.name}!\n\n${archetype.description}\n\n${archetype.strength}\n${archetype.weakness}\n\n⚔️ Пройди тест и узнай свой архетип в мире Фэнтезийных Госзакупок!\nhttps://fantasy-zakupki.netlify.app`;
     
     // Вариант 1: Web версия Telegram (без приложения)
-    const tgWebUrl = `https://web.telegram.org/k/?startattach=share_url&url=${encodeURIComponent(imageUrl)}&text=${encodeURIComponent(text)}`;
+const tgWebUrl = `https://t.me/share/url?url=${encodeURIComponent(imageUrl)}&text=${encodeURIComponent(text)}`;
     
     // Вариант 2: Если выше не работает, используйте этот
     // const tgWebUrl = `https://web.telegram.org/?start=${encodeURIComponent(imageUrl)}`;
