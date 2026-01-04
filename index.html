@@ -385,7 +385,7 @@
 
             if (archetype) {
     // Подставляем изображение без проверки
-    const imagePath = `images/${archetype.imageFile}`;
+    const imagePath = `{archetype.imageFile}`;
     document.getElementById('archetype-image').innerHTML = `<img src="${imagePath}" alt="${archetype.name}">`;
     
     document.getElementById('archetype-name').textContent = archetype.name;
