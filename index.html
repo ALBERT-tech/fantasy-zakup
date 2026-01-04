@@ -404,7 +404,7 @@ function shareToTelegram() {
     const archetype = archetypesData.find(a => a.id === archetypeId);
     
     // Получаем полный URL фото архетипа
-    const imageUrl = new URL(`images/${archetype.imageFile}`, window.location.href).href;
+    const imageUrl = new URL(`{archetype.imageFile}`, window.location.href).href;
     
     // Текст для шеринга
     const text = `🎭 Я --- ${archetype.name}!\n\n${archetype.description}\n\n${archetype.strength}\n${archetype.weakness}\n\n⚔️ Пройди тест и узнай свой архетип в мире Фэнтезийных Госзакупок!\nhttps://fantasy-zakupki.netlify.app`;
