@@ -407,7 +407,7 @@ function shareToTelegram() {
     const imageUrl = new URL(archetype.imageFile, window.location.href).href;
     
     // Текст для шеринга
-    const text = `🎭 Я --- ${archetype.name}!\n\n${archetype.description}\n\n${archetype.strength}\n${archetype.weakness}\n\n⚔️ Пройди тест и узнай свой архетип в мире Фэнтезийных Госзакупок!\nhttps://fantasy-zakupki.netlify.app`;
+    const text = `🎭 Я --- ${archetype.name}!\n\n${archetype.description}\n\n${archetype.strength}\n${archetype.weakness}\n\n⚔️ Пройди тест и узнай свой архетип в мире Фэнтезийных Госзакупок!\nhttps://albert-tech.github.io/fantasy-zakup/`;
     
     // Вариант 1: Web версия Telegram (без приложения)
 const tgWebUrl = `https://t.me/share/url?url=${encodeURIComponent(imageUrl)}&text=${encodeURIComponent(text)}`;
