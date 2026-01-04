@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Квест архетипов: Тендеры ex machina</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #fff;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(20, 25, 40, 0.95);
+            border-radius: 12px;
+            border: 2px solid #d4af37;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(212, 175, 55, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            color: #d4af37;
+            font-size: 2em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #b8860b;
+            margin-bottom: 30px;
+            font-size: 0.95em;
+        }
+
+        .progress-bar {
+            background: #333;
+            height: 8px;
+            border-radius: 4px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #d4af37, #ffd700);
+            height: 100%;
+            transition: width 0.3s ease;
+        }
+
+        .story-title {
+            background: rgba(212, 175, 55, 0.2);
+            padding: 12px;
+            border-left: 4px solid #d4af37;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            font-size: 0.95em;
+            color: #ffd700;
+            font-weight: bold;
+        }
+
+        .scene-title {
+            background: rgba(212, 175, 55, 0.15);
+            padding: 10px;
+            margin-bottom: 15px;
+            border-left: 4px solid #ffd700;
+            border-radius: 4px;
+            font-size: 0.9em;
+            color: #e0e0e0;
+        }
+
+        .question-text {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            line-height: 1.6;
+            color: #e0e0e0;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option {
+            background: rgba(212, 175, 55, 0.05);
+            border: 2px solid #444;
+            padding: 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+            color: #e0e0e0;
+        }
+
+        .option:hover {
+            background: rgba(212, 175, 55, 0.15);
+            border-color: #d4af37;
+            transform: translateX(5px);
+        }
+
+        .option.selected {
+            background: rgba(212, 175, 55, 0.3);
+            border-color: #ffd700;
+        }
+
+        .result-screen {
+            display: none;
+            text-align: center;
+        }
+
+        .result-screen.active {
+            display: block;
+        }
+
+        .archetype-image {
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+            margin: 20px auto;
+            border: 2px solid #d4af37;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2);
+        }
+
+        .archetype-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .archetype-name {
+            font-size: 1.8em;
+            color: #ffd700;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        .archetype-description {
+            background: rgba(212, 175, 55, 0.1);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            line-height: 1.8;
+            text-align: left;
+            border-left: 4px solid #d4af37;
+        }
+
+        .archetype-strength {
+            color: #90ee90;
+            margin: 10px 0;
+        }
+
+        .archetype-weakness {
+            color: #ff6b6b;
+            margin: 10px 0;
+        }
+
+        .share-buttons {
+            display: flex;
+            gap: 10px;
+            margin: 30px 0;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            background: #d4af37;
+            color: #1a1a2e;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background: #ffd700;
+            transform: scale(1.05);
+        }
+
+        .btn-restart {
+            background: #666;
+            color: #fff;
+        }
+
+        .btn-restart:hover {
+            background: #888;
+        }
+
+        .telegram-link {
+            background: linear-gradient(135deg, #0088cc, #0066aa);
+            color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .telegram-link a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1em;
+            display: inline-block;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+
+        .telegram-link a:hover {
+            background: rgba(255, 255, 255, 0.2);
+            text-decoration: underline;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #d4af37;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>⚔️ ТЕСТ АРХЕТИПОВ ⚔️</h1>
+        <p class="subtitle">Выбери свой путь в мире Фэнтезийных Госзакупок</p>
+
+        <div class="progress-bar">
+            <div class="progress-fill"></div>
+        </div>
+
+        <div id="quiz-container" class="loading">Загрузка вопросов...</div>
+
+        <div class="result-screen" id="result">
+            <h2 style="color: #d4af37; margin-bottom: 20px;">✨ Ваш архетип ✨</h2>
+            <div class="archetype-image" id="archetype-image"></div>
+            <div class="archetype-name" id="archetype-name">Архетип</div>
+            <div class="archetype-description" id="archetype-desc">Описание...</div>
+            <div class="archetype-strength" id="archetype-strength"></div>
+            <div class="archetype-weakness" id="archetype-weakness"></div>
+
+            <div class="share-buttons">
+                <button class="btn" onclick="shareToTelegram()">📱 Поделиться в Telegram</button>
+                <button class="btn" onclick="shareToOther()">🔗 Скопировать ссылку</button>
+            </div>
+
+            <div class="telegram-link">
+                <p style="margin-bottom: 10px;">Если интересно читать о госзакупках и ИИ с юмором:</p>
+                <a href="https://t.me/tickettotender" target="_blank">📢 Подпишись на Тендеры ex machina</a>
+            </div>
+
+            <button class="btn btn-restart" onclick="restartQuiz()">Пройти тест снова</button>
+        </div>
+    </div>
+
+    <script>
+        let questionsData = [];
+        let archetypesData = [];
+        let scores = {
+            producer: 0,
+            distributor: 0,
+            reseller: 0,
+            honest: 0,
+            crook: 0,
+            cautious: 0,
+            adventurous: 0
+        };
+
+        let currentQuestion = 0;
+        let totalQuestions = 0;
+
+        // Загрузка data.json
+        async function loadData() {
+            try {
+                const response = await fetch('data.json');
+                if (!response.ok) throw new Error('Не удалось загрузить data.json');
+                
+                const data = await response.json();
+                questionsData = data.questions;
+                archetypesData = data.archetypes;
+                totalQuestions = questionsData.length;
+                
+                renderQuestion(0);
+            } catch (error) {
+                document.getElementById('quiz-container').innerHTML = 
+                    `<div class="loading" style="color: #ff6b6b;">⚠️ Ошибка: ${error.message}<br>Убедитесь, что файл data.json находится в одной папке с index.html</div>`;
+                console.error('Ошибка загрузки:', error);
+            }
+        }
+
+        function renderQuestion(index) {
+            if (index >= totalQuestions) {
+                showResult();
+                return;
+            }
+
+            const q = questionsData[index];
+            const html = `
+                <div class="story-title">📖 ${q.story}</div>
+                <div class="scene-title">🎬 ${q.scene}</div>
+                <div class="question-text">${q.question}</div>
+                <div class="options">
+                    ${q.options.map((opt, i) => `
+                        <div class="option" onclick="selectAnswer(${i}, ${index})">
+                            ${opt.text}
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            document.getElementById('quiz-container').innerHTML = html;
+            updateProgress();
+            window.scrollTo(0, 0);
+        }
+
+        function selectAnswer(optionIndex, questionIndex) {
+            const option = questionsData[questionIndex].options[optionIndex];
+            
+            Object.keys(option.scores).forEach(key => {
+                scores[key] += option.scores[key];
+            });
+
+            currentQuestion++;
+            renderQuestion(currentQuestion);
+        }
+
+        function updateProgress() {
+            const progress = (currentQuestion / totalQuestions) * 100;
+            document.querySelector('.progress-fill').style.width = progress + '%';
+        }
+
+        function getArchetype() {
+            // Определяем роль (макс по трём позициям)
+            let role = 'producer';
+            if (scores.distributor > scores.producer && scores.distributor >= scores.reseller) {
+                role = 'distributor';
+            } else if (scores.reseller > scores.producer && scores.reseller > scores.distributor) {
+                role = 'reseller';
+            }
+
+            // Определяем мораль (честный vs жулик/хитрый)
+            const morality = scores.honest >= scores.crook ? 'honest' : 'crook';
+
+            // Определяем смелость (осторожный vs авантюрный)
+            const boldness = scores.adventurous > scores.cautious ? 'adventurous' : 'cautious';
+
+            // Ищем архетип по комбинации параметров
+            const archetype = archetypesData.find(arch => {
+                const roleMatch = (role === 'producer' && arch.role === 'Производитель') ||
+                                 (role === 'distributor' && arch.role === 'Дистрибьютор') ||
+                                 (role === 'reseller' && arch.role === 'Перекуп') ||
+                                 (arch.role === 'Системщик');
+
+                const moralMatch = (morality === 'honest' && arch.morality === 'Честный') ||
+                                  (morality === 'crook' && (arch.morality === 'Жулик' || arch.morality === 'Хитрый'));
+
+                const boldMatch = (boldness === 'cautious' && arch.boldness === 'Осторожный') ||
+                                 (boldness === 'adventurous' && arch.boldness === 'Авантюрный');
+                
+                return roleMatch && moralMatch && boldMatch;
+            });
+
+            // Если точная комбинация не найдена, возвращаем архетип #4 (Эльфийский торговый посол)
+            return archetype ? archetype.id : 4;
+        }
+
+        function showResult() {
+            document.getElementById('quiz-container').innerHTML = '';
+            document.getElementById('result').classList.add('active');
+
+            const archetypeId = getArchetype();
+            const archetype = archetypesData.find(a => a.id === archetypeId);
+
+            if (archetype) {
+    // Подставляем изображение без проверки
+    const imagePath = `images/${archetype.imageFile}`;
+    document.getElementById('archetype-image').innerHTML = `<img src="${imagePath}" alt="${archetype.name}">`;
+    
+    document.getElementById('archetype-name').textContent = archetype.name;
+    document.getElementById('archetype-desc').textContent = archetype.description;
+    document.getElementById('archetype-strength').textContent = archetype.strength;
+    document.getElementById('archetype-weakness').textContent = archetype.weakness;
+
+    window.scrollTo(0, 0);
+}
+
+        }
+
+        
+function shareToTelegram() {
+    const archetypeId = getArchetype();
+    const archetype = archetypesData.find(a => a.id === archetypeId);
+    
+    // Получаем полный URL фото архетипа
+    const imageUrl = new URL(`images/${archetype.imageFile}`, window.location.href).href;
+    
+    // Текст для шеринга
+    const text = `🎭 Я --- ${archetype.name}!\n\n${archetype.description}\n\n${archetype.strength}\n${archetype.weakness}\n\n⚔️ Пройди тест и узнай свой архетип в мире Фэнтезийных Госзакупок!\nhttps://fantasy-zakupki.netlify.app`;
+    
+    // Вариант 1: Web версия Telegram (без приложения)
+    const tgWebUrl = `https://web.telegram.org/k/?startattach=share_url&url=${encodeURIComponent(imageUrl)}&text=${encodeURIComponent(text)}`;
+    
+    // Вариант 2: Если выше не работает, используйте этот
+    // const tgWebUrl = `https://web.telegram.org/?start=${encodeURIComponent(imageUrl)}`;
+    
+    window.open(tgWebUrl, '_blank');
+}
+
+
+
+
+        function shareToOther() {
+            const archetypeId = getArchetype();
+            const archetype = archetypesData.find(a => a.id === archetypeId);
+            const text = `Я --- ${archetype.name}! Пройди тест: ${window.location.href}`;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('✅ Ссылка скопирована в буфер обмена!');
+            });
+        }
+
+        function restartQuiz() {
+            scores = {
+                producer: 0,
+                distributor: 0,
+                reseller: 0,
+                honest: 0,
+                crook: 0,
+                cautious: 0,
+                adventurous: 0
+            };
+            currentQuestion = 0;
+            document.getElementById('result').classList.remove('active');
+            renderQuestion(0);
+        }
+
+        // Запуск загрузки при открытии страницы
+        loadData();
+    </script>
+</body>
+</html>
